@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <title>小球动画</title>
+  <style type="text/css">
+    *{
+      margin: 0;padding: 0;
+    }
+    .box{
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      color: #222;
+      font-weight: bold;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <script type="text/javascript">
+    init(10);
+    
+    // var newAnimation = function (fn) {
+    //       return setTimeout(fn,1000/60);
+    // };
+
+    // addFn();
+    // var i = 0;
+    // function addFn(){
+    //     console.log("烦死人")
+    //     newAnimation(addFn);
+    // }
+
+    function init(num) {
+
+      window.requestAnimationFrame = window.requestAnimationFrame||function (fn) {
+          return setTimeout(fn,1000/60);
+      };//兼容代码
+      for (var i = 0; i<num;i++) {
+        var oDiv = document.createElement("div");
+            oDiv.className = "box";
+            oDiv.tSpeed = 1+ Math.floor(Math.random()*4);//小球的横向速度
+            oDiv.lSpeed = 2+ Math.floor(Math.random()*8);//小球的纵向速度
+            oDiv.innerHTML = "no."+(i+1);
+            oDiv.style.left = (num-i-1)*50+"px";
+            oDiv.style.top = (num-i-1)*30+"px";
+            oDiv.style.background = Color();
+        document.body.appendChild(oDiv);
+      }
+
+      var OBox = document.querySelectorAll(".box");
+      var winHeight = document.documentElement.clientHeight - OBox[0].clientHeight;
+      var winWidth = document.documentElement.clientWidth - OBox[0].clientWidth;
+      showPst();
+      window.onresize = function (){
+          winHeight = document.documentElement.clientHeight - OBox[0].clientHeight;
+          winWidth = document.documentElement.clientWidth - OBox[0].clientWidth;
+
+          showPst();
+      };
+      function showPst(){
+          console.log(document.documentElement.clientWidth)
+          console.log(OBox[0].clientHeight+"+++++"+OBox[0].clientWidth);
+      };
+      move();
+      function move () {
+        for (var i = 0; i<num;i++) {
+          var oBox = OBox[i];//把每一个产生的box赋值给oBox
+          var Left = oBox.offsetLeft;
+          var Top = oBox.offsetTop;
+          var moveLeft = Left + oBox.lSpeed;
+          var moveTop = Top + oBox.tSpeed;
+          // 如果碰到了左右壁
+          if(moveLeft>=winWidth || moveLeft<=0){
+              moveLeft = Math.min(moveLeft,winWidth);
+              moveLeft = Math.max(moveLeft,0);
+              oBox.lSpeed= -oBox.lSpeed;
+              oBox.style.background = Color();
+          }
+          // 如果碰到了上下壁
+          if(moveTop>=winHeight || moveTop<=0){
+              // 边界值控制，防止数值越界导致动画不够流畅
+              moveTop = Math.min(moveTop,winHeight);
+              moveTop = Math.max(moveTop,0);
+              oBox.tSpeed= -oBox.tSpeed;
+              oBox.style.background = Color();
+          }
+          /*// 如果碰到了左右壁
+          if(moveLeft>=winWidth || moveLeft<=0){
+              moveLeft = Math.min(moveLeft,winWidth);
+              moveLeft = Math.max(moveLeft,0);
+              oBox.lSpeed= -oBox.lSpeed;
+              oBox.style.background = Color();
+          }
+          // 如果碰到了上下壁
+          if(moveTop>=winHeight || moveTop<=0){
+              moveTop = Math.min(moveTop,winHeight);
+              moveTop = Math.max(moveTop,0);
+              oBox.tSpeed= -oBox.tSpeed;
+              oBox.style.background = Color();
+          }*/
+
+          // }
+          oBox.style.left = moveLeft  + "px";
+          oBox.style.top = moveTop  + "px";
+        };
+        requestAnimationFrame(move);
+      };
+
+      //随机颜色 二种写法
+      // var arr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d","e","f","A", "B","C","D","E","F"];
+      function Color(){
+        var arr = ["2", "3", "4", "5", "6", "7", "8", "9","A", "B","C","D","E","F"];
+        var str = "#";
+        var arrLen = arr.length;
+        for(var i=0;i<6;i++){
+            str += arr[Math.floor(Math.random()*arrLen)]
+        }
+        return str;
+      }
+      
+      //第二种写法
+     // function Color() {
+     //      var r = Math.floor(Math.random()*256),
+     //          g = Math.floor(Math.random()*256),
+     //          b = Math.floor(Math.random()*256);
+     //      return "rgb("+r+","+g+","+b+")";
+     //  }
+    }
+  </script>
+  
+</body>
+</html>

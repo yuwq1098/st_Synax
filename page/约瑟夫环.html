@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>约瑟夫环生存计算</title>
+</head>
+<style type="text/css">
+	.info{
+		height: 28px;
+		line-height: 28px;
+		font-size: 20px;
+		font-weight: 700;
+	}
+	.info span{
+		margin: 0 15px;
+		color: green;
+	}
+</style>
+
+<body>
+
+	<script type="text/javascript">
+
+	    function Node(element){
+	    	this.element = element;
+	    	this.next = null;
+	    }
+
+	    function PeopleList(){
+            this.head = new Node("head")
+	    }
+        
+        PeopleList.prototype.find = function(item){
+            var curNode = this.head;
+            while( curNode.element != item){
+            	curNode = curNode.next;
+            }
+            return curNode;
+        }
+
+        // 插入新角色
+        PeopleList.prototype.insert = function(newElement, item){
+            var newNode = new Node(newElement);
+            var curNode = this.find(item);
+            newNode.next = curNode.next;
+            curNode.next = newNode;
+        }
+
+        // 显示链表所有元素
+        PeopleList.prototype.allElement = function(){
+            var curNode = this.head;
+            var result = [];
+            while( curNode.element != null){
+            	result.push(curNode.next.element);
+            	curNode = curNode.next;
+            }
+            return result;
+        }
+
+        var pObj = new PeopleList();
+        pObj.insert("a","head");
+        pObj.insert("b","a");
+
+        console.log(pObj.allElement());
+		
+		// function = killGame(){
+            
+		// }
+	</script>
+</body>
+</html>
